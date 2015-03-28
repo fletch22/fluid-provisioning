@@ -28,7 +28,7 @@ class VagrantRegent
 				stderr.close
 			end
 		}
-	end 
+	end
 
 	def startBox
 		port = -1
@@ -87,6 +87,10 @@ class VagrantRegent
 end 
 
 begin
+	ARGV.each do|a|
+  		puts "Argument found: #{a}"
+
+	end
 	vagrantRegent = VagrantRegent.new()
 	vagrantRegent.initVagrant()
 	port = vagrantRegent.startBox()
