@@ -35,20 +35,24 @@ class VagrantRegent
 	end
 
 	def cleanup(isForceClean)
-		puts 'IS force_clean: ' + isForceClean.to_s
+		
+
 		if (isForceClean) then
+			puts "\nBeginning cleanup operations.\n\n"
 			vagrantFilename = 'Vagrantfile'
 			if (File.exist?(vagrantFilename)) then
-				puts 'Vagrant file exists and will be deleted.'
+				puts "Vagrant file exists and will be deleted."
 				FileUtils.rm vagrantFilename, :verbose => true
-				puts 'Vagrant file removed.'
+				puts "Vagrant file removed."
 			end
 			vagrantFolder = '.vagrant'
 			if (File.exist?(vagrantFolder)) then 
-				puts 'Vagrant folder exists and will be deleted'
+				puts "Vagrant folder exists and will be deleted"
 				FileUtils.rmdir vagrantFolder, :verbose => true
-				puts 'Vagrant folder removed.'
+				puts "Vagrant folder removed."
 			end
+
+			puts "\nFinished cleanup operations. Moving on ...\n\n"
 		end
 	end
 
@@ -124,8 +128,8 @@ begin
 
 	vagrantRegent = VagrantRegent.new()
 	vagrantRegent.initVagrant(opts.force_clean)
-	# port = vagrantRegent.startBox()
-	# puts "\n\nNew port number: " + port
+	port = vagrantRegent.startBox()
+	puts "\n\nNew port number: " + port.to_s + "\n\n"
 rescue Exception => message  
 	puts 'Program aborting due to: ' + message.to_s
 end
