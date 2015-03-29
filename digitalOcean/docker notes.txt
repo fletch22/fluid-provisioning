@@ -1,0 +1,13 @@
+
+
+
+# Run docker on port 80; but inside the container listen/send on 8080
+sudo docker run -p 80:8080 -d fletch22/node-homepage7
+
+# Run docker interfactively from the command line (forceing it to ignore the CMD at end of Dockerfile)
+sudo docker run -it --entrypoint=/bin/bash  fletch22/node-homepage7 -i
+
+# Stop docker container
+sudo docker stop #containerId
+
+# Copy file from local to remote unix

@@ -5,14 +5,18 @@
 # Use port to start ssh work to configure box.
 
 require 'open3'
-
+require 'trollop'
+require 'fileutils'
 
 puts "\n\nRegenting Vagrant ...\n\n"
 
 class VagrantRegent
 	
-	def initVagrant
+	def initVagrant(isForceClean)
 		puts "\nInitiating Vagrant ..."
+
+		cleanup(isForceClean)
+
 		Open3.popen3('vagrant init hashicorp/precise32') {|stdin, stdout, stderr, wait_thr|
 
 			stdin.close			
@@ -28,6 +32,24 @@ class VagrantRegent
 				stderr.close
 			end
 		}
+	end
+
+	def cleanup(isForceClean)
+		puts 'IS force_clean: ' + isForceClean.to_s
+		if (isForceClean) then
+			vagrantFilename = 'Vagrantfile'
+			if (File.exist?(vagrantFilename)) then
+				puts 'Vagrant file exists and will be deleted.'
+				FileUtils.rm vagrantFilename, :verbose => true
+				puts 'Vagrant file removed.'
+			end
+			vagrantFolder = '.vagrant'
+			if (File.exist?(vagrantFolder)) then 
+				puts 'Vagrant folder exists and will be deleted'
+				FileUtils.rmdir vagrantFolder, :verbose => true
+				puts 'Vagrant folder removed.'
+			end
+		end
 	end
 
 	def startBox
@@ -84,17 +106,26 @@ class VagrantRegent
 		end
 		raise userFailureMessage
 	end
-end 
+end
+
+opts = Trollop::options do
+  opt :force_clean, "Cleans out the .vagrant folder and deletes Vagrant file.", :default => false
+end
 
 begin
-	ARGV.each do|a|
-  		puts "Argument found: #{a}"
+	# if (nil != ARGV[0]) then
+	# 	firstArgument = ARGV[0]
+	# 	if (0 != firstArgument.index("--")) then
+	# 		raise "Arguments must start with '--'."
+	# 	end
+	# end
 
-	end
+	p opts.force_clean
+
 	vagrantRegent = VagrantRegent.new()
-	vagrantRegent.initVagrant()
-	port = vagrantRegent.startBox()
-	puts "\n\nNew port number: " + port
+	vagrantRegent.initVagrant(opts.force_clean)
+	# port = vagrantRegent.startBox()
+	# puts "\n\nNew port number: " + port
 rescue Exception => message  
 	puts 'Program aborting due to: ' + message.to_s
 end

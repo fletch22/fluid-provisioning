@@ -1,0 +1,1 @@
+ssh root@104.236.185.148 -q -F ssh-config "bash -s" < setup-user.sh $1
