@@ -2,13 +2,16 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.3.beta1)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
       rspec-expectations (~> 3.2.0)
       rspec-mocks (~> 3.2.0)
-    rspec-core (3.2.2)
+    rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
-    rspec-expectations (3.2.0)
+    rspec-expectations (3.2.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
     rspec-mocks (3.2.1)
@@ -22,5 +25,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  net-scp (~> 1.2.1)
+  net-ssh (~> 2.9.3.beta1)
   rspec (~> 3.0)
   trollop (~> 2.1.2)

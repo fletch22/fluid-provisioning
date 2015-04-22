@@ -3,10 +3,13 @@
 # Add command line arg to wipe the existing Vagrant file.
 # Detect default port chosen during 'Vagrant up'; return port from 'startBox'
 # Use port to start ssh work to configure box.
-
 require 'open3'
 require 'trollop'
 require 'fileutils'
+require 'net/ssh'
+require 'net/scp'
+
+require_relative 'setup-remote-server'
 
 puts "\n\nRegenting Vagrant ...\n\n"
 
@@ -124,12 +127,17 @@ begin
 	# 	end
 	# end
 
-	p opts.force_clean
+	# p opts.force_clean
 
-	vagrantRegent = VagrantRegent.new()
-	vagrantRegent.initVagrant(opts.force_clean)
-	port = vagrantRegent.startBox()
-	puts "\n\nNew port number: " + port.to_s + "\n\n"
+	# vagrantRegent = VagrantRegent.new()
+	# vagrantRegent.initVagrant(opts.force_clean)
+	# port = vagrantRegent.startBox()
+	# puts "\n\nNew port number: " + port.to_s + "\n\n"
+
+	
+	remoteServerSetup = RemoteServerSetup.new()
+	remoteServerSetup.sendFile()
+	
 rescue Exception => message  
 	puts 'Program aborting due to: ' + message.to_s
 end
